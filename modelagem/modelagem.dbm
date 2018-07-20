@@ -4,14 +4,14 @@ CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
 <dbmodel pgmodeler-ver="0.9.0" last-position="0,0" last-zoom="1"
-	 default-schema="public" default-owner="postgres">
+	 default-owner="postgres">
 <database name="novo_banco_de_dados">
 </database>
 
 <schema name="public" fill-color="#e1e1e1" sql-disabled="true">
 </schema>
 
-<schema name="seguranca" rect-visible="true" fill-color="#e1e1e1">
+<schema name="seguranca" rect-visible="true" fill-color="#00aa00">
 </schema>
 
 <sequence name="sq_usuario"
@@ -23,7 +23,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="usuario">
 	<schema name="seguranca"/>
-	<position x="200" y="63"/>
+	<position x="200" y="60"/>
 	<column name="id" not-null="true" sequence="seguranca.sq_usuario">
 		<type name="integer" length="1"/>
 		<comment><![CDATA[Chave da tabela]]></comment>
@@ -74,7 +74,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="endereco">
 	<schema name="seguranca"/>
-	<position x="860" y="83"/>
+	<position x="860" y="80"/>
 	<column name="id" not-null="true" sequence="seguranca.sq_endereco">
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Chave primaria da tabela endereco]]></comment>
@@ -109,7 +109,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="uf">
 	<schema name="seguranca"/>
-	<position x="480" y="343"/>
+	<position x="480" y="340"/>
 	<column name="sigla" not-null="true">
 		<type name="char" length="3"/>
 		<comment><![CDATA[Sigla do estado]]></comment>
@@ -125,7 +125,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="cidade">
 	<schema name="seguranca"/>
-	<position x="200" y="283"/>
+	<position x="200" y="280"/>
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
 		<comment><![CDATA[Chave primaria da tabela]]></comment>
@@ -143,12 +143,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<schema name="administracao" rect-visible="true" fill-color="#e1e1e1">
+<schema name="administracao" rect-visible="true" fill-color="#5555ff">
 </schema>
 
 <table name="tipoSanguineo">
 	<schema name="administracao"/>
-	<position x="923" y="534"/>
+	<position x="920" y="540"/>
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
 		<comment><![CDATA[Chave primaria da tabela]]></comment>
@@ -197,24 +197,24 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="seguranca.endereco"
 	 src-required="false" dst-required="false"/>
 
-<relationship name="rel_endereco_uf" type="relfk"
-	 src-table="&quot;Seguranca&quot;.endereco"
-	 dst-table="&quot;Seguranca&quot;.uf"
-	 src-required="false" dst-required="false"/>
-
-<relationship name="rel_cidade_uf" type="relfk"
-	 src-table="&quot;Seguranca&quot;.cidade"
-	 dst-table="&quot;Seguranca&quot;.uf"
-	 src-required="false" dst-required="false"/>
-
-<relationship name="rel_endereco_cidade" type="relfk"
-	 src-table="&quot;Seguranca&quot;.endereco"
-	 dst-table="&quot;Seguranca&quot;.cidade"
-	 src-required="false" dst-required="false"/>
-
 <relationship name="&quot;rel_usuario_tipoSanguineo&quot;" type="relfk"
 	 src-table="seguranca.usuario"
 	 dst-table="administracao.&quot;tipoSanguineo&quot;"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_endereco_uf" type="relfk"
+	 src-table="seguranca.endereco"
+	 dst-table="seguranca.uf"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_endereco_cidade" type="relfk"
+	 src-table="seguranca.endereco"
+	 dst-table="seguranca.cidade"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_cidade_uf" type="relfk"
+	 src-table="seguranca.cidade"
+	 dst-table="seguranca.uf"
 	 src-required="false" dst-required="false"/>
 
 </dbmodel>
