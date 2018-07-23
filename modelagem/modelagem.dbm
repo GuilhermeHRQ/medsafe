@@ -28,11 +28,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="integer" length="1"/>
 		<comment><![CDATA[Chave da tabela]]></comment>
 	</column>
-	<column name="idTipoSanguineo" not-null="true">
+	<column name="idtiposanguineo" not-null="true">
 		<type name="integer" length="1"/>
 		<comment><![CDATA[Chave estrangeira do tipo sanguíneo do usuário]]></comment>
 	</column>
-	<column name="idEndereco" not-null="true">
+	<column name="idendereco" not-null="true">
 		<type name="integer" length="1"/>
 		<comment><![CDATA[Chave estrangeira do endereço do usuário]]></comment>
 	</column>
@@ -56,7 +56,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="char" length="11"/>
 		<comment><![CDATA[Celular do usuário]]></comment>
 	</column>
-	<column name="dataNascimento" not-null="true">
+	<column name="datanascimento" not-null="true">
 		<type name="date" length="1"/>
 		<comment><![CDATA[Data de nascimento do usuário]]></comment>
 	</column>
@@ -98,7 +98,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="char" length="2"/>
 		<comment><![CDATA[UF do endereco]]></comment>
 	</column>
-	<column name="idCidade" not-null="true">
+	<column name="idcidade" not-null="true">
 		<type name="integer" length="0"/>
 		<comment><![CDATA[ID da cidade do endereco]]></comment>
 	</column>
@@ -157,20 +157,20 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="char" length="3"/>
 		<comment><![CDATA[Nome do tipo sanguineo]]></comment>
 	</column>
-	<constraint name="pk_tipoSanguineo" type="pk-constr" table="administracao.&quot;tipoSanguineo&quot;">
+	<constraint name="pk_tiposanguineo" type="pk-constr" table="administracao.&quot;tipoSanguineo&quot;">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
 
 <constraint name="fk_endereco_usuario" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="seguranca.endereco" table="seguranca.usuario">
-	<columns names="idEndereco" ref-type="src-columns"/>
+	<columns names="idendereco" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
-<constraint name="fk_tipoSanguineo_usuario" type="fk-constr" comparison-type="MATCH FULL"
+<constraint name="fk_tiposanguineo_usuario" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="administracao.&quot;tipoSanguineo&quot;" table="seguranca.usuario">
-	<columns names="idTipoSanguineo" ref-type="src-columns"/>
+	<columns names="idtiposanguineo" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
@@ -182,7 +182,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <constraint name="fk_cidade_endereco" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="seguranca.cidade" table="seguranca.endereco">
-	<columns names="idCidade" ref-type="src-columns"/>
+	<columns names="idcidade" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
