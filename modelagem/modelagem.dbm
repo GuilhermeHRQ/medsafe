@@ -146,7 +146,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <schema name="administracao" rect-visible="true" fill-color="#5555ff">
 </schema>
 
-<table name="tipoSanguineo">
+<table name="tiposanguineo">
 	<schema name="administracao"/>
 	<position x="920" y="540"/>
 	<column name="id" not-null="true">
@@ -157,7 +157,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="char" length="3"/>
 		<comment><![CDATA[Nome do tipo sanguineo]]></comment>
 	</column>
-	<constraint name="pk_tiposanguineo" type="pk-constr" table="administracao.&quot;tipoSanguineo&quot;">
+	<constraint name="pk_tiposanguineo" type="pk-constr" table="administracao.tiposanguineo">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -169,7 +169,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </constraint>
 
 <constraint name="fk_tiposanguineo_usuario" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="administracao.&quot;tipoSanguineo&quot;" table="seguranca.usuario">
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="administracao.tiposanguineo" table="seguranca.usuario">
 	<columns names="idtiposanguineo" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
@@ -199,7 +199,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <relationship name="&quot;rel_usuario_tipoSanguineo&quot;" type="relfk"
 	 src-table="seguranca.usuario"
-	 dst-table="administracao.&quot;tipoSanguineo&quot;"
+	 dst-table="administracao.tiposanguineo"
 	 src-required="false" dst-required="false"/>
 
 <relationship name="rel_endereco_uf" type="relfk"
