@@ -3,9 +3,9 @@
 -- PostgreSQL version: 9.6
 
 -- [ Diff summary ]
--- Dropped objects: 7
--- Created objects: 4
--- Changed objects: 2
+-- Dropped objects: 11
+-- Created objects: 8
+-- Changed objects: 4
 -- Truncated tables: 0
 
 SET search_path=public,pg_catalog,seguranca,administracao;
@@ -13,60 +13,139 @@ SET search_path=public,pg_catalog,seguranca,administracao;
 
 
 -- [ Dropped objects ] --
-ALTER TABLE seguranca.endereco DROP CONSTRAINT IF EXISTS fk_uf_endereco CASCADE;
+ALTER TABLE seguranca.cidade DROP CONSTRAINT IF EXISTS fk_uf_cidade CASCADE;
 -- ddl-end --
-ALTER TABLE seguranca.usuario DROP COLUMN IF EXISTS celular CASCADE;
+DROP FUNCTION IF EXISTS seguranca.removerusuario(integer) CASCADE;
 -- ddl-end --
-ALTER TABLE seguranca.endereco DROP COLUMN IF EXISTS uf CASCADE;
+DROP FUNCTION IF EXISTS seguranca.atualizarusuario(integer,character varying,character varying,character varying,character,character,date,integer,json) CASCADE;
+-- ddl-end --
+DROP FUNCTION IF EXISTS seguranca.selecionarusuarioporid(IN integer) CASCADE;
+-- ddl-end --
+DROP FUNCTION IF EXISTS seguranca.selecionarusuario(IN character varying,IN integer,IN integer) CASCADE;
+-- ddl-end --
+DROP FUNCTION IF EXISTS seguranca.inserirusuario(character varying,character varying,character varying,character,character,date,integer,json) CASCADE;
+-- ddl-end --
+DROP TABLE IF EXISTS seguranca.cidade CASCADE;
+-- ddl-end --
+DROP SEQUENCE IF EXISTS seguranca.cidade_id_seq CASCADE;
+-- ddl-end --
+DROP TABLE IF EXISTS seguranca.uf CASCADE;
+-- ddl-end --
+DROP SEQUENCE IF EXISTS seguranca.sq_endereco CASCADE;
+-- ddl-end --
+DROP SEQUENCE IF EXISTS seguranca.sq_usuario CASCADE;
 -- ddl-end --
 
 
 -- [ Created objects ] --
--- object: ativo | type: COLUMN --
--- ALTER TABLE seguranca.usuario DROP COLUMN IF EXISTS ativo CASCADE;
-ALTER TABLE seguranca.usuario ADD COLUMN ativo boolean NOT NULL DEFAULT true;
--- ddl-end --
-
-
--- object: senha | type: COLUMN --
--- ALTER TABLE seguranca.usuario DROP COLUMN IF EXISTS senha CASCADE;
-ALTER TABLE seguranca.usuario ADD COLUMN senha varchar(100) NOT NULL;
--- ddl-end --
-
-
--- object: seguranca.telefone | type: TABLE --
--- DROP TABLE IF EXISTS seguranca.telefone CASCADE;
-CREATE TABLE seguranca.telefone(
-	id serial NOT NULL,
-	idusuario integer NOT NULL,
-	numero char(11) NOT NULL,
-	CONSTRAINT pk_telefone PRIMARY KEY (id)
+-- object: administracao.cidade | type: TABLE --
+-- DROP TABLE IF EXISTS administracao.cidade CASCADE;
+CREATE TABLE administracao.cidade(
+	id integer NOT NULL,
+	nome varchar(70) NOT NULL,
+	uf char(2) NOT NULL,
+	CONSTRAINT pk_cidade PRIMARY KEY (id)
 
 );
 -- ddl-end --
-COMMENT ON COLUMN seguranca.telefone.id IS 'Chave primária da tabela';
+COMMENT ON COLUMN administracao.cidade.id IS 'Chave primaria da tabela';
 -- ddl-end --
-COMMENT ON COLUMN seguranca.telefone.idusuario IS 'ID do usuário a que pertence o telefone';
+COMMENT ON COLUMN administracao.cidade.nome IS 'Nome da cidade';
 -- ddl-end --
-COMMENT ON COLUMN seguranca.telefone.numero IS 'numero do telefone';
+COMMENT ON COLUMN administracao.cidade.uf IS 'UF da cidade';
+-- ddl-end --
+
+-- object: administracao.uf | type: TABLE --
+-- DROP TABLE IF EXISTS administracao.uf CASCADE;
+CREATE TABLE administracao.uf(
+	sigla char(3) NOT NULL,
+	nome varchar(30) NOT NULL,
+	CONSTRAINT pk_uf PRIMARY KEY (sigla)
+
+);
+-- ddl-end --
+COMMENT ON COLUMN administracao.uf.sigla IS 'Sigla do estado';
+-- ddl-end --
+COMMENT ON COLUMN administracao.uf.nome IS 'Nome do estado';
+-- ddl-end --
+
+-- object: administracao.tipotelefone | type: TABLE --
+-- DROP TABLE IF EXISTS administracao.tipotelefone CASCADE;
+CREATE TABLE administracao.tipotelefone(
+	id serial NOT NULL,
+	nome varchar(50) NOT NULL,
+	CONSTRAINT pk_tipotelefone PRIMARY KEY (id)
+
+);
+-- ddl-end --
+COMMENT ON COLUMN administracao.tipotelefone.id IS 'Chave da tabela';
+-- ddl-end --
+COMMENT ON COLUMN administracao.tipotelefone.nome IS 'Nome do tipo de telefone';
+-- ddl-end --
+
+-- object: idtipo | type: COLUMN --
+-- ALTER TABLE seguranca.telefone DROP COLUMN IF EXISTS idtipo CASCADE;
+ALTER TABLE seguranca.telefone ADD COLUMN idtipo integer NOT NULL;
+-- ddl-end --
+
+
+-- object: seguranca.usuario_id_seq | type: SEQUENCE --
+-- DROP SEQUENCE IF EXISTS seguranca.usuario_id_seq CASCADE;
+CREATE SEQUENCE seguranca.usuario_id_seq
+	INCREMENT BY 1
+	MINVALUE -2147483648
+	MAXVALUE 2147483647
+	START WITH 1
+	CACHE 1
+	NO CYCLE
+	OWNED BY NONE;
+-- ddl-end --
+
+-- object: seguranca.endereco_id_seq | type: SEQUENCE --
+-- DROP SEQUENCE IF EXISTS seguranca.endereco_id_seq CASCADE;
+CREATE SEQUENCE seguranca.endereco_id_seq
+	INCREMENT BY 1
+	MINVALUE -2147483648
+	MAXVALUE 2147483647
+	START WITH 1
+	CACHE 1
+	NO CYCLE
+	OWNED BY NONE;
 -- ddl-end --
 
 
 
 -- [ Changed objects ] --
-ALTER TABLE seguranca.usuario ALTER COLUMN id SET DEFAULT nextval('seguranca.sq_usuario'::regclass);
+ALTER TABLE seguranca.usuario ALTER COLUMN id TYPE integer;
+-- ddl-end --
+ALTER TABLE seguranca.usuario ALTER COLUMN id SET DEFAULT nextval('seguranca.usuario_id_seq'::regclass);
+-- ddl-end --
+ALTER TABLE seguranca.endereco ALTER COLUMN id TYPE integer;
+-- ddl-end --
+ALTER TABLE seguranca.endereco ALTER COLUMN id SET DEFAULT nextval('seguranca.endereco_id_seq'::regclass);
 -- ddl-end --
 ALTER TABLE administracao.tiposanguineo ALTER COLUMN id TYPE integer;
 -- ddl-end --
 ALTER TABLE administracao.tiposanguineo ALTER COLUMN id SET DEFAULT nextval('administracao.tiposanguineo_id_seq'::regclass);
 -- ddl-end --
+ALTER TABLE seguranca.telefone ALTER COLUMN id TYPE integer;
+-- ddl-end --
+ALTER TABLE seguranca.telefone ALTER COLUMN id SET DEFAULT nextval('seguranca.telefone_id_seq'::regclass);
+-- ddl-end --
 
 
 -- [ Created foreign keys ] --
--- object: fk_telefone_usuario | type: CONSTRAINT --
--- ALTER TABLE seguranca.telefone DROP CONSTRAINT IF EXISTS fk_telefone_usuario CASCADE;
-ALTER TABLE seguranca.telefone ADD CONSTRAINT fk_telefone_usuario FOREIGN KEY (idusuario)
-REFERENCES seguranca.usuario (id) MATCH FULL
+-- object: fk_uf_cidade | type: CONSTRAINT --
+-- ALTER TABLE administracao.cidade DROP CONSTRAINT IF EXISTS fk_uf_cidade CASCADE;
+ALTER TABLE administracao.cidade ADD CONSTRAINT fk_uf_cidade FOREIGN KEY (uf)
+REFERENCES administracao.uf (sigla) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+-- ddl-end --
+
+-- object: fk_telefone_tipotelefone | type: CONSTRAINT --
+-- ALTER TABLE seguranca.telefone DROP CONSTRAINT IF EXISTS fk_telefone_tipotelefone CASCADE;
+ALTER TABLE seguranca.telefone ADD CONSTRAINT fk_telefone_tipotelefone FOREIGN KEY (idtipo)
+REFERENCES administracao.tipotelefone (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
