@@ -23,7 +23,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="usuario">
 	<schema name="seguranca"/>
-	<position x="200" y="60"/>
+	<position x="200" y="63"/>
 	<column name="id" not-null="true" sequence="seguranca.sq_usuario">
 		<type name="integer" length="1"/>
 		<comment><![CDATA[Chave da tabela]]></comment>
@@ -52,13 +52,17 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="char" length="11"/>
 		<comment><![CDATA[CPF do usuário]]></comment>
 	</column>
-	<column name="celular" not-null="true">
-		<type name="char" length="11"/>
-		<comment><![CDATA[Celular do usuário]]></comment>
-	</column>
 	<column name="datanascimento" not-null="true">
 		<type name="date" length="1"/>
 		<comment><![CDATA[Data de nascimento do usuário]]></comment>
+	</column>
+	<column name="ativo" not-null="true" default-value="true">
+		<type name="boolean" length="0"/>
+		<comment><![CDATA[Flag de status do usuário]]></comment>
+	</column>
+	<column name="senha" not-null="true">
+		<type name="varchar" length="100"/>
+		<comment><![CDATA[senha do usuário]]></comment>
 	</column>
 	<constraint name="pk_usuario" type="pk-constr" table="seguranca.usuario">
 		<columns names="id" ref-type="src-columns"/>
@@ -74,7 +78,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="endereco">
 	<schema name="seguranca"/>
-	<position x="860" y="80"/>
+	<position x="860" y="63"/>
 	<column name="id" not-null="true" sequence="seguranca.sq_endereco">
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Chave primaria da tabela endereco]]></comment>
@@ -94,10 +98,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="numero" not-null="true">
 		<type name="smallint" length="0"/>
 	</column>
-	<column name="uf" not-null="true">
-		<type name="char" length="2"/>
-		<comment><![CDATA[UF do endereco]]></comment>
-	</column>
 	<column name="idcidade" not-null="true">
 		<type name="integer" length="0"/>
 		<comment><![CDATA[ID da cidade do endereco]]></comment>
@@ -109,7 +109,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="uf">
 	<schema name="seguranca"/>
-	<position x="480" y="340"/>
+	<position x="500" y="383"/>
 	<column name="sigla" not-null="true">
 		<type name="char" length="3"/>
 		<comment><![CDATA[Sigla do estado]]></comment>
@@ -125,9 +125,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="cidade">
 	<schema name="seguranca"/>
-	<position x="200" y="280"/>
+	<position x="200" y="343"/>
 	<column name="id" not-null="true">
-		<type name="serial" length="0"/>
+		<type name="integer" length="0"/>
 		<comment><![CDATA[Chave primaria da tabela]]></comment>
 	</column>
 	<column name="nome" not-null="true">
@@ -148,7 +148,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="tiposanguineo">
 	<schema name="administracao"/>
-	<position x="920" y="540"/>
+	<position x="920" y="543"/>
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
 		<comment><![CDATA[Chave primaria da tabela]]></comment>
@@ -158,6 +158,26 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<comment><![CDATA[Nome do tipo sanguineo]]></comment>
 	</column>
 	<constraint name="pk_tiposanguineo" type="pk-constr" table="administracao.tiposanguineo">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="telefone">
+	<schema name="seguranca"/>
+	<position x="880" y="320"/>
+	<column name="id" not-null="true">
+		<type name="serial" length="0"/>
+		<comment><![CDATA[Chave primária da tabela]]></comment>
+	</column>
+	<column name="idusuario" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[ID do usuário a que pertence o telefone]]></comment>
+	</column>
+	<column name="numero" not-null="true">
+		<type name="char" length="11"/>
+		<comment><![CDATA[numero do telefone]]></comment>
+	</column>
+	<constraint name="pk_telefone" type="pk-constr" table="seguranca.telefone">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -174,12 +194,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
-<constraint name="fk_uf_endereco" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="seguranca.uf" table="seguranca.endereco">
-	<columns names="uf" ref-type="src-columns"/>
-	<columns names="sigla" ref-type="dst-columns"/>
-</constraint>
-
 <constraint name="fk_cidade_endereco" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="seguranca.cidade" table="seguranca.endereco">
 	<columns names="idcidade" ref-type="src-columns"/>
@@ -192,6 +206,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="sigla" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="fk_telefone_usuario" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="seguranca.usuario" table="seguranca.telefone">
+	<columns names="idusuario" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
 <relationship name="rel_usuario_endereco" type="relfk"
 	 src-table="seguranca.usuario"
 	 dst-table="seguranca.endereco"
@@ -202,11 +222,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="administracao.tiposanguineo"
 	 src-required="false" dst-required="false"/>
 
-<relationship name="rel_endereco_uf" type="relfk"
-	 src-table="seguranca.endereco"
-	 dst-table="seguranca.uf"
-	 src-required="false" dst-required="false"/>
-
 <relationship name="rel_endereco_cidade" type="relfk"
 	 src-table="seguranca.endereco"
 	 dst-table="seguranca.cidade"
@@ -215,6 +230,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_cidade_uf" type="relfk"
 	 src-table="seguranca.cidade"
 	 dst-table="seguranca.uf"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_telefone_usuario" type="relfk"
+	 src-table="seguranca.telefone"
+	 dst-table="seguranca.usuario"
 	 src-required="false" dst-required="false"/>
 
 </dbmodel>
