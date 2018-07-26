@@ -4,95 +4,225 @@ CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
 <dbmodel pgmodeler-ver="0.9.0" last-position="0,0" last-zoom="1"
-	 default-owner="postgres">
-<database name="novo_banco_de_dados">
+	 default-schema="public" default-owner="postgres">
+<database name="medsafe" encoding="UTF8" lc-collate="en_US.utf8" lc-ctype="en_US.utf8">
+	<role name="postgres"/>
+	<tablespace name="pg_default"/>
 </database>
 
-<schema name="public" fill-color="#e1e1e1" sql-disabled="true">
+<schema name="public" rect-visible="true" fill-color="#e1e1e1" sql-disabled="true">
 </schema>
 
-<schema name="seguranca" rect-visible="true" fill-color="#00aa00">
+<schema name="seguranca" rect-visible="true" fill-color="#55aa00">
 </schema>
 
-<sequence name="sq_usuario"
+<sequence name="usuario_id_seq"
 	 start="1" increment="1"
-	 min-value="0" max-value="2147483647"
+	 min-value="-2147483648" max-value="2147483647"
 	 cache="1" cycle="false">
 	<schema name="seguranca"/>
+	<role name="postgres"/>
 </sequence>
+
+<sequence name="endereco_id_seq"
+	 start="1" increment="1"
+	 min-value="-2147483648" max-value="2147483647"
+	 cache="1" cycle="false">
+	<schema name="seguranca"/>
+	<role name="postgres"/>
+</sequence>
+
+<schema name="administracao" rect-visible="true" fill-color="#5555ff">
+</schema>
+
+<sequence name="tiposanguineo_id_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="administracao"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="tiposanguineo">
+	<schema name="administracao"/>
+	<role name="postgres"/>
+	<position x="271.066" y="483"/>
+	<column name="id" not-null="true" sequence="administracao.tiposanguineo_id_seq">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Chave primaria da tabela]]></comment>
+	</column>
+	<column name="nome" not-null="true">
+		<type name="character" length="3"/>
+		<comment><![CDATA[Nome do tipo sanguineo]]></comment>
+	</column>
+	<constraint name="pk_tiposanguineo" type="pk-constr" table="administracao.tiposanguineo">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="telefone_id_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="seguranca"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="telefone">
+	<schema name="seguranca"/>
+	<role name="postgres"/>
+	<position x="980.6" y="72"/>
+	<column name="id" not-null="true" sequence="seguranca.telefone_id_seq">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Chave primária da tabela]]></comment>
+	</column>
+	<column name="idusuario" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[ID do usuário a que pertence o telefone]]></comment>
+	</column>
+	<column name="numero" not-null="true">
+		<type name="character" length="11"/>
+		<comment><![CDATA[numero do telefone]]></comment>
+	</column>
+	<column name="idtipo" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="pk_telefone" type="pk-constr" table="seguranca.telefone">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="cidade">
+	<schema name="administracao"/>
+	<role name="postgres"/>
+	<position x="572.531" y="483"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Chave primaria da tabela]]></comment>
+	</column>
+	<column name="nome" not-null="true">
+		<type name="character varying" length="70"/>
+		<comment><![CDATA[Nome da cidade]]></comment>
+	</column>
+	<column name="uf" not-null="true">
+		<type name="character" length="2"/>
+		<comment><![CDATA[UF da cidade]]></comment>
+	</column>
+	<constraint name="pk_cidade" type="pk-constr" table="administracao.cidade">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="uf">
+	<schema name="administracao"/>
+	<role name="postgres"/>
+	<position x="563.231" y="685"/>
+	<column name="sigla" not-null="true">
+		<type name="character" length="3"/>
+		<comment><![CDATA[Sigla do estado]]></comment>
+	</column>
+	<column name="nome" not-null="true">
+		<type name="character varying" length="30"/>
+		<comment><![CDATA[Nome do estado]]></comment>
+	</column>
+	<constraint name="pk_uf" type="pk-constr" table="administracao.uf">
+		<columns names="sigla" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="tipotelefone_id_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="administracao"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="tipotelefone">
+	<schema name="administracao"/>
+	<role name="postgres"/>
+	<position x="1047.93" y="480"/>
+	<column name="id" not-null="true" sequence="administracao.tipotelefone_id_seq">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Chave da tabela]]></comment>
+	</column>
+	<column name="nome" not-null="true">
+		<type name="character varying" length="50"/>
+		<comment><![CDATA[Nome do tipo de telefone]]></comment>
+	</column>
+	<constraint name="pk_tipotelefone" type="pk-constr" table="administracao.tipotelefone">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
 
 <table name="usuario">
 	<schema name="seguranca"/>
-	<position x="200" y="63"/>
-	<column name="id" not-null="true" sequence="seguranca.sq_usuario">
-		<type name="integer" length="1"/>
+	<role name="postgres"/>
+	<position x="290" y="72"/>
+	<column name="id" not-null="true" sequence="seguranca.usuario_id_seq">
+		<type name="integer" length="0"/>
 		<comment><![CDATA[Chave da tabela]]></comment>
 	</column>
 	<column name="idtiposanguineo" not-null="true">
-		<type name="integer" length="1"/>
+		<type name="integer" length="0"/>
 		<comment><![CDATA[Chave estrangeira do tipo sanguíneo do usuário]]></comment>
 	</column>
 	<column name="idendereco" not-null="true">
-		<type name="integer" length="1"/>
+		<type name="integer" length="0"/>
 		<comment><![CDATA[Chave estrangeira do endereço do usuário]]></comment>
 	</column>
 	<column name="nome" not-null="true">
-		<type name="varchar" length="50"/>
+		<type name="character varying" length="50"/>
 		<comment><![CDATA[Nome do usuário]]></comment>
 	</column>
 	<column name="sobrenome" not-null="true">
-		<type name="varchar" length="50"/>
+		<type name="character varying" length="50"/>
 		<comment><![CDATA[Sobrenome do usuário]]></comment>
 	</column>
 	<column name="email" not-null="true">
-		<type name="varchar" length="255"/>
+		<type name="character varying" length="255"/>
 		<comment><![CDATA[Email do usuário]]></comment>
 	</column>
 	<column name="cpf" not-null="true">
-		<type name="char" length="11"/>
+		<type name="character" length="11"/>
 		<comment><![CDATA[CPF do usuário]]></comment>
 	</column>
 	<column name="datanascimento" not-null="true">
-		<type name="date" length="1"/>
+		<type name="date" length="0"/>
 		<comment><![CDATA[Data de nascimento do usuário]]></comment>
 	</column>
 	<column name="ativo" not-null="true" default-value="true">
 		<type name="boolean" length="0"/>
-		<comment><![CDATA[Flag de status do usuário]]></comment>
 	</column>
 	<column name="senha" not-null="true">
-		<type name="varchar" length="100"/>
-		<comment><![CDATA[senha do usuário]]></comment>
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="logon" not-null="true">
+		<type name="character varying" length="30"/>
 	</column>
 	<constraint name="pk_usuario" type="pk-constr" table="seguranca.usuario">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
 
-<sequence name="sq_endereco"
-	 start="1" increment="1"
-	 min-value="0" max-value="2147483647"
-	 cache="1" cycle="false">
-	<schema name="seguranca"/>
-</sequence>
-
 <table name="endereco">
 	<schema name="seguranca"/>
-	<position x="860" y="63"/>
-	<column name="id" not-null="true" sequence="seguranca.sq_endereco">
+	<role name="postgres"/>
+	<position x="652.9" y="72"/>
+	<column name="id" not-null="true" sequence="seguranca.endereco_id_seq">
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Chave primaria da tabela endereco]]></comment>
 	</column>
 	<column name="cep" not-null="true">
-		<type name="char" length="8"/>
+		<type name="character" length="8"/>
 		<comment><![CDATA[CEP do endereco]]></comment>
 	</column>
 	<column name="logradouro" not-null="true">
-		<type name="varchar" length="70"/>
+		<type name="character varying" length="70"/>
 		<comment><![CDATA[Logradouro do endereco]]></comment>
 	</column>
 	<column name="bairro" not-null="true">
-		<type name="varchar" length="50"/>
+		<type name="character varying" length="50"/>
 		<comment><![CDATA[Bairro do endereco]]></comment>
 	</column>
 	<column name="numero" not-null="true">
@@ -107,80 +237,652 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="uf">
+<function name="inserirusuario"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		execution-cost="100"
+		row-amount="0">
 	<schema name="seguranca"/>
-	<position x="500" y="383"/>
-	<column name="sigla" not-null="true">
-		<type name="char" length="3"/>
-		<comment><![CDATA[Sigla do estado]]></comment>
-	</column>
-	<column name="nome" not-null="true">
-		<type name="varchar" length="30"/>
-		<comment><![CDATA[Nome do estado]]></comment>
-	</column>
-	<constraint name="pk_uf" type="pk-constr" table="seguranca.uf">
-		<columns names="sigla" ref-type="src-columns"/>
-	</constraint>
-</table>
-
-<table name="cidade">
-	<schema name="seguranca"/>
-	<position x="200" y="343"/>
-	<column name="id" not-null="true">
+	<role name="postgres"/>
+	<language name="plpgsql" sql-disabled="true"/>
+	<return-type>
+	<type name="json" length="1"/>
+	</return-type>
+	<parameter name="pnome">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<parameter name="psobrenome">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<parameter name="pemail">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<parameter name="pcpf">
+		<type name="character" length="0"/>
+	</parameter>
+	<parameter name="pdatanascimento">
+		<type name="date" length="0"/>
+	</parameter>
+	<parameter name="pidtiposanguineo">
 		<type name="integer" length="0"/>
-		<comment><![CDATA[Chave primaria da tabela]]></comment>
-	</column>
-	<column name="nome" not-null="true">
-		<type name="varchar" length="70"/>
-		<comment><![CDATA[Nome da cidade]]></comment>
-	</column>
-	<column name="uf" not-null="true">
-		<type name="char" length="2"/>
-		<comment><![CDATA[UF da cidade]]></comment>
-	</column>
-	<constraint name="pk_cidade" type="pk-constr" table="seguranca.cidade">
-		<columns names="id" ref-type="src-columns"/>
-	</constraint>
-</table>
+	</parameter>
+	<parameter name="psenha">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<parameter name="plogon">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<parameter name="pendereco">
+		<type name="json" length="0"/>
+	</parameter>
+	<parameter name="ptelefone">
+		<type name="json" length="0"/>
+	</parameter>
+	<definition><![CDATA[
 
-<schema name="administracao" rect-visible="true" fill-color="#5555ff">
-</schema>
+/*
+SELECT Seguranca.inserirUsuario(
+           'Guilherme',
+           'Henrique',
+           'b@email.com',
+           '11111111111',
+           '12-02-1999',
+           '1',
+           'teste123',
+           'jamal',
+           '{
+             "cep": "14409015",
+             "logradouro": "Rua Martiminiano Francisco de Andrade",
+             "bairro": "Santa Adélia",
+             "numero": 2245,
+             "uf": "SP",
+             "idCidade": 1
+           }' :: JSON,
+           '[
+               {
+                "numero": "16992417882",
+                "idTipo": 1
+               },
+               {
+                "numero": "1637034409",
+                "idTipo": 2
+               }
+           ]'
+       )
+*/
+DECLARE
+    vIdEndereco INTEGER;
+    vIdUsuario  INTEGER;
+BEGIN
+    IF EXISTS(SELECT 1
+              FROM Seguranca.usuario u
+              WHERE u.email = pEmail)
+    THEN
+        RETURN json_build_object(
+            'executionCode', 1,
+            'message', 'Email já cadastrado'
+        );
+    END IF;
 
-<table name="tiposanguineo">
-	<schema name="administracao"/>
-	<position x="920" y="543"/>
-	<column name="id" not-null="true">
-		<type name="serial" length="0"/>
-		<comment><![CDATA[Chave primaria da tabela]]></comment>
-	</column>
-	<column name="nome" not-null="true">
-		<type name="char" length="3"/>
-		<comment><![CDATA[Nome do tipo sanguineo]]></comment>
-	</column>
-	<constraint name="pk_tiposanguineo" type="pk-constr" table="administracao.tiposanguineo">
-		<columns names="id" ref-type="src-columns"/>
-	</constraint>
-</table>
+    IF EXISTS(SELECT 1
+              FROM Seguranca.usuario u
+              WHERE u.cpf = pCpf)
+    THEN
+        RETURN json_build_object(
+            'executionCode', 2,
+            'message', 'CPF já cadastrado'
+        );
+    END IF;
 
-<table name="telefone">
+    IF EXISTS(SELECT 1
+              FROM Seguranca.usuario u
+              WHERE u.logon = pLogon)
+    THEN
+        RETURN json_build_object(
+            'executionCode', 3,
+            'message', 'Logon já está sendo utilizado'
+        );
+    END IF;
+
+    INSERT INTO Seguranca.endereco (
+        cep,
+        logradouro,
+        bairro,
+        numero,
+        idcidade
+    )
+        SELECT
+            e."cep",
+            e."logradouro",
+            e."bairro",
+            e."numero",
+            e."idCidade"
+        FROM json_to_record(pEndereco)
+            AS e(
+             "cep" CHAR(8),
+             "logradouro" VARCHAR(70),
+             "bairro" VARCHAR(50),
+             "numero" SMALLINT,
+             "idCidade" INTEGER
+             )
+    RETURNING id
+        INTO vIdEndereco;
+
+    INSERT INTO Seguranca.usuario (
+        nome,
+        sobrenome,
+        email,
+        cpf,
+        datanascimento,
+        idendereco,
+        idtiposanguineo,
+        senha,
+        logon
+    )
+    VALUES (
+        pNome,
+        pSobrenome,
+        pEmail,
+        pCpf,
+        pDataNascimento,
+        vIdEndereco,
+        pIdTipoSanguineo,
+        md5(pSenha),
+        pLogon
+    )
+    RETURNING id
+        INTO vIdUsuario;
+
+    INSERT INTO Seguranca.telefone (
+        idusuario,
+        numero,
+        idtipo
+    )
+        SELECT
+            vIdUsuario,
+            tel."numero",
+            tel."idTipo"
+        FROM json_to_recordset(pTelefone)
+            AS tel (
+             "numero" CHAR(11),
+             "idTipo" INTEGER
+             );
+
+    RETURN json_build_object(
+        'executionCode', 0,
+        'message', 'Usuário inserido com sucesso',
+        'content', json_build_object(
+            'id', vIdUsuario
+        )
+    );
+END;
+]]></definition>
+</function>
+
+<function name="selecionarusuario"
+		window-func="false"
+		returns-setof="true"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		execution-cost="100"
+		row-amount="1000">
 	<schema name="seguranca"/>
-	<position x="880" y="320"/>
-	<column name="id" not-null="true">
-		<type name="serial" length="0"/>
-		<comment><![CDATA[Chave primária da tabela]]></comment>
-	</column>
-	<column name="idusuario" not-null="true">
+	<role name="postgres"/>
+	<language name="plpgsql" sql-disabled="true"/>
+	<return-type>
+	<parameter name="totalLinhas">
+		<type name="bigint" length="0"/>
+	</parameter>
+	<parameter name="id">
 		<type name="integer" length="0"/>
-		<comment><![CDATA[ID do usuário a que pertence o telefone]]></comment>
-	</column>
-	<column name="numero" not-null="true">
-		<type name="char" length="11"/>
-		<comment><![CDATA[numero do telefone]]></comment>
-	</column>
-	<constraint name="pk_telefone" type="pk-constr" table="seguranca.telefone">
-		<columns names="id" ref-type="src-columns"/>
-	</constraint>
-</table>
+	</parameter>
+	<parameter name="nome">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<parameter name="sobrenome">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<parameter name="email">
+		<type name="character varying" length="0"/>
+	</parameter>
+	</return-type>
+	<parameter name="pfiltro" in="true">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<parameter name="plinhas" in="true">
+		<type name="integer" length="0"/>
+	</parameter>
+	<parameter name="ppagina" in="true">
+		<type name="integer" length="0"/>
+	</parameter>
+	<definition><![CDATA[
+
+/*
+SELECT Seguranca.selecionarUsuario(
+           '',
+           10,
+           1
+       )
+       */
+DECLARE
+BEGIN
+    RETURN QUERY
+    SELECT
+        COUNT(u.id)
+        OVER (
+            PARTITION BY 1 ),
+        u.id,
+        u.nome,
+        u.sobrenome,
+        u.email
+    FROM Seguranca.usuario u
+    WHERE
+        CASE WHEN pFiltro IS NOT NULL
+            THEN u.nome ILIKE '%' || pFiltro || '%' OR u.sobrenome ILIKE '%' || pFiltro || '%'
+        ELSE
+            TRUE
+        END
+    LIMIT
+        CASE WHEN pLinhas > 0 AND pPagina > 0
+            THEN pLinhas
+        ELSE
+            NULL
+        END
+    OFFSET
+        CASE WHEN pLinhas > 0 AND pPagina > 0
+            THEN (pPagina - 1) * pLinhas
+        ELSE
+            NULL
+        END;
+END;
+]]></definition>
+</function>
+
+<function name="selecionarusuarioporid"
+		window-func="false"
+		returns-setof="true"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		execution-cost="100"
+		row-amount="1000">
+	<schema name="seguranca"/>
+	<role name="postgres"/>
+	<language name="plpgsql" sql-disabled="true"/>
+	<return-type>
+	<parameter name="id">
+		<type name="integer" length="0"/>
+	</parameter>
+	<parameter name="nome">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<parameter name="sobrenome">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<parameter name="email">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<parameter name="cpf">
+		<type name="character" length="0"/>
+	</parameter>
+	<parameter name="dataNascimento">
+		<type name="date" length="0"/>
+	</parameter>
+	<parameter name="idTipoSanguineo">
+		<type name="integer" length="0"/>
+	</parameter>
+	<parameter name="ativo">
+		<type name="boolean" length="0"/>
+	</parameter>
+	<parameter name="logon">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<parameter name="endereco">
+		<type name="json" length="0"/>
+	</parameter>
+	<parameter name="telefone">
+		<type name="json" length="0"/>
+	</parameter>
+	</return-type>
+	<parameter name="pid" in="true">
+		<type name="integer" length="0"/>
+	</parameter>
+	<definition><![CDATA[
+
+/*
+  SELECT Seguranca.selecionarUsuarioPorId(1)
+*/
+
+BEGIN
+    RETURN QUERY
+    SELECT
+        u.id,
+        u.nome,
+        u.sobrenome,
+        u.email,
+        u.cpf,
+        u.datanascimento,
+        u.idtiposanguineo,
+        u.ativo,
+        u.logon,
+        (
+            SELECT COALESCE(json_agg(ende), '{}')
+            FROM (
+                     SELECT
+                         ue.id         AS "id",
+                         ue.cep        AS "cep",
+                         ue.logradouro AS "logradouro",
+                         ue.bairro     AS "bairro",
+                         ue.numero     AS "numero",
+                         ue.idcidade   AS "idCidade"
+                     FROM Seguranca.endereco ue
+                     WHERE ue.id = u.idendereco
+                 ) ende
+        ) AS "endereco",
+        (
+            SELECT COALESCE(json_agg(tel), '[]')
+            FROM (
+                     SELECT
+                         ut.id     AS "id",
+                         ut.numero AS "numero",
+                         ut.idtipo AS "idTipo"
+                     FROM Seguranca.telefone as ut
+                     WHERE ut.idusuario = pId
+                 ) tel
+        ) AS "telefone"
+    FROM
+        Seguranca.usuario u
+    WHERE pId = u.id;
+END;
+]]></definition>
+</function>
+
+<function name="atualizarusuario"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="seguranca"/>
+	<role name="postgres"/>
+	<language name="plpgsql" sql-disabled="true"/>
+	<return-type>
+	<type name="json" length="1"/>
+	</return-type>
+	<parameter name="pidusuario">
+		<type name="integer" length="0"/>
+	</parameter>
+	<parameter name="pnome">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<parameter name="psobrenome">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<parameter name="pemail">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<parameter name="pcpf">
+		<type name="character" length="0"/>
+	</parameter>
+	<parameter name="pdatanascimento">
+		<type name="date" length="0"/>
+	</parameter>
+	<parameter name="pidtiposanguineo">
+		<type name="integer" length="0"/>
+	</parameter>
+	<parameter name="pativo">
+		<type name="boolean" length="0"/>
+	</parameter>
+	<parameter name="psenha">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<parameter name="plogon">
+		<type name="character varying" length="0"/>
+	</parameter>
+	<parameter name="pendereco">
+		<type name="json" length="0"/>
+	</parameter>
+	<parameter name="ptelefone">
+		<type name="json" length="0"/>
+	</parameter>
+	<definition><![CDATA[
+
+/*
+SELECT Seguranca.atualizarUsuario(
+           2,
+           'Robson Paes',
+           'Tronquito',
+           'b@email.com',
+           '32112332101',
+           '02-12-2000',
+           '2',
+           true,
+           null,
+           'jamal',
+           '{
+             "cep": "14409013",
+             "logradouro": "Rua Azira Nassif",
+             "bairro": "Jdm. Barão",
+             "numero": 50,
+             "uf": "SP",
+             "idCidade": 1
+           }' :: JSON,
+           '[
+             {
+               "id": 3,
+               "numero": "1637034402",
+               "idTipo": 2
+             },
+             {
+               "id": 4,
+               "numero": "16992523350",
+               "idTipo": 1
+             }
+           ]'
+       )
+
+*/
+BEGIN
+    IF NOT EXISTS(SELECT 1
+                  FROM Seguranca.usuario u
+                  WHERE u.id = pIdUsuario)
+    THEN
+        RETURN
+        json_build_object(
+            'executionCode', 1,
+            'message', 'Usuário não encontrado'
+        );
+    END IF;
+
+    IF EXISTS(SELECT 1
+              FROM Seguranca.usuario u
+              WHERE u.email = pEmail AND u.id <> pIdUsuario)
+    THEN
+        RETURN json_build_object(
+            'executionCode', 2,
+            'message', 'Email já cadastrado'
+        );
+    END IF;
+
+    IF EXISTS(SELECT 1
+              FROM Seguranca.usuario u
+              WHERE u.cpf = pCpf AND u.id <> pIdUsuario)
+    THEN
+        RETURN json_build_object(
+            'executionCode', 3,
+            'message', 'CPF já cadastrado'
+        );
+    END IF;
+
+    IF EXISTS(SELECT 1
+              FROM Seguranca.usuario u
+              WHERE u.logon = pLogon AND u.id <> pIdUsuario)
+    THEN
+        RETURN json_build_object(
+            'executionCode', 4,
+            'message', 'Logon já cadastrado'
+        );
+    END IF;
+
+    UPDATE Seguranca.usuario u
+    SET nome            = pNome,
+        sobrenome       = pSobrenome,
+        email           = pEmail,
+        cpf             = pCpf,
+        datanascimento  = pDataNascimento,
+        idtiposanguineo = pIdTipoSanguineo,
+        ativo           = pAtivo,
+        senha           = (
+            CASE WHEN pSenha IS NOT NULL
+                THEN md5(pSenha)
+            ELSE senha END
+        ),
+        logon           = pLogon
+    WHERE id = pIdUsuario;
+
+    UPDATE Seguranca.endereco ue
+    SET id         = ende."id",
+        cep        = ende."cep",
+        logradouro = ende."logradouro",
+        bairro     = ende."bairro",
+        numero     = ende."numero",
+        idcidade   = ende."idCidade"
+    FROM (
+             SELECT
+                 "id",
+                 "cep",
+                 "logradouro",
+                 "bairro",
+                 "numero",
+                 "idCidade"
+             FROM json_to_record(pEndereco)
+                 AS x(
+                  "id" INTEGER,
+                  "cep" CHAR(8),
+                  "logradouro" VARCHAR(70),
+                  "bairro" VARCHAR(50),
+                  "numero" SMALLINT,
+                  "idCidade" INTEGER
+                  )
+         ) ende
+    WHERE ue.id = ende."id";
+
+    -- DELETA DO BANCO OS TELEFONES QUE NÃO FOREM RETORNADOS DO FRONT
+    DELETE FROM Seguranca.telefone
+    WHERE idusuario = pIdUsuario
+          AND id NOT IN (SELECT id
+                         FROM json_to_recordset(pTelefone)
+                             AS x(
+                              "id" INTEGER
+                              )
+                         WHERE id IS NOT NULL);
+
+    -- UPDATE NO BANCO DOS TELEFONES QUE FOREM RETORNADOS DO FRONT
+    UPDATE Seguranca.telefone ut
+    SET numero = te."numero",
+        idtipo = te."idTipo"
+    FROM (
+             SELECT
+                 "id",
+                 "numero",
+                 "idTipo"
+             FROM json_to_recordset(pTelefone)
+                 AS x(
+                  "id" INTEGER,
+                  "numero" CHAR(11),
+                  "idTipo" INTEGER
+                  )
+             WHERE id IS NOT NULL
+         ) te
+    WHERE ut.idusuario = pIdUsuario AND ut.id = te."id";
+
+    -- INSERE NO BANCO ONDE O JSON NÃO TEM ID
+    INSERT INTO Seguranca.telefone (
+        idusuario,
+        numero,
+        idtipo
+    )
+        SELECT
+            pIdUsuario,
+            "numero",
+            "idTipo"
+        FROM json_to_recordset(pTelefone)
+            AS x(
+             "id" INTEGER,
+             "numero" CHAR(11),
+             "idTipo" INTEGER
+             )
+        WHERE id IS NULL;
+
+
+    RETURN json_build_object(
+        'executionCode', 0,
+        'message', 'Usuário atualizado com sucesso'
+    );
+END;
+]]></definition>
+</function>
+
+<function name="removerusuario"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="seguranca"/>
+	<role name="postgres"/>
+	<language name="plpgsql" sql-disabled="true"/>
+	<return-type>
+	<type name="json" length="1"/>
+	</return-type>
+	<parameter name="pid">
+		<type name="integer" length="0"/>
+	</parameter>
+	<definition><![CDATA[
+
+/*
+SELECT Seguranca.removerUsuario(2)
+*/
+
+DECLARE
+    vIdEndereco INTEGER;
+BEGIN
+    IF NOT EXISTS(SELECT 1
+                  FROM Seguranca.usuario u
+                  WHERE u.id = pId)
+    THEN
+        RETURN json_build_object(
+            'executionCode', 1,
+            'message', 'Usuário não encontrado'
+        );
+    END IF;
+
+    DELETE FROM Seguranca.telefone
+    WHERE idusuario = pId;
+
+    DELETE FROM Seguranca.usuario u
+    WHERE u.id = pId
+    RETURNING idendereco
+        INTO vIdEndereco;
+
+    DELETE FROM Seguranca.endereco ue
+    WHERE ue.id = vIdEndereco;
+
+    RETURN json_build_object(
+        'executionCode', 1,
+        'message', 'Usuário excluído com sucesso'
+    );
+END;
+]]></definition>
+</function>
 
 <constraint name="fk_endereco_usuario" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="seguranca.endereco" table="seguranca.usuario">
@@ -195,15 +897,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </constraint>
 
 <constraint name="fk_cidade_endereco" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="seguranca.cidade" table="seguranca.endereco">
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="administracao.cidade" table="seguranca.endereco">
 	<columns names="idcidade" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
-</constraint>
-
-<constraint name="fk_uf_cidade" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="seguranca.uf" table="seguranca.cidade">
-	<columns names="uf" ref-type="src-columns"/>
-	<columns names="sigla" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="fk_telefone_usuario" type="fk-constr" comparison-type="MATCH FULL"
@@ -212,29 +908,52 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="fk_telefone_tipotelefone" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="administracao.tipotelefone" table="seguranca.telefone">
+	<columns names="idtipo" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_uf_cidade" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="administracao.uf" table="administracao.cidade">
+	<columns names="uf" ref-type="src-columns"/>
+	<columns names="sigla" ref-type="dst-columns"/>
+</constraint>
+
 <relationship name="rel_usuario_endereco" type="relfk"
+	 custom-color="#4b3e56"
 	 src-table="seguranca.usuario"
 	 dst-table="seguranca.endereco"
 	 src-required="false" dst-required="false"/>
 
-<relationship name="&quot;rel_usuario_tipoSanguineo&quot;" type="relfk"
+<relationship name="rel_usuario_tiposanguineo" type="relfk"
+	 custom-color="#9ac721"
 	 src-table="seguranca.usuario"
 	 dst-table="administracao.tiposanguineo"
 	 src-required="false" dst-required="false"/>
 
 <relationship name="rel_endereco_cidade" type="relfk"
+	 custom-color="#249b49"
 	 src-table="seguranca.endereco"
-	 dst-table="seguranca.cidade"
-	 src-required="false" dst-required="false"/>
-
-<relationship name="rel_cidade_uf" type="relfk"
-	 src-table="seguranca.cidade"
-	 dst-table="seguranca.uf"
+	 dst-table="administracao.cidade"
 	 src-required="false" dst-required="false"/>
 
 <relationship name="rel_telefone_usuario" type="relfk"
+	 custom-color="#942665"
 	 src-table="seguranca.telefone"
 	 dst-table="seguranca.usuario"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_telefone_tipotelefone" type="relfk"
+	 custom-color="#abb258"
+	 src-table="seguranca.telefone"
+	 dst-table="administracao.tipotelefone"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_cidade_uf" type="relfk"
+	 custom-color="#94e1e5"
+	 src-table="administracao.cidade"
+	 dst-table="administracao.uf"
 	 src-required="false" dst-required="false"/>
 
 </dbmodel>
