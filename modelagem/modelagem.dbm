@@ -95,7 +95,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="cidade">
 	<schema name="administracao"/>
 	<role name="postgres"/>
-	<position x="572.531" y="483"/>
+	<position x="621.531" y="486"/>
 	<column name="id" not-null="true">
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Chave primaria da tabela]]></comment>
@@ -158,7 +158,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="usuario">
 	<schema name="seguranca"/>
 	<role name="postgres"/>
-	<position x="290" y="72"/>
+	<position x="131" y="110"/>
 	<column name="id" not-null="true" sequence="seguranca.usuario_id_seq">
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Chave da tabela]]></comment>
@@ -884,24 +884,6 @@ END;
 ]]></definition>
 </function>
 
-<constraint name="fk_endereco_usuario" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="seguranca.endereco" table="seguranca.usuario">
-	<columns names="idendereco" ref-type="src-columns"/>
-	<columns names="id" ref-type="dst-columns"/>
-</constraint>
-
-<constraint name="fk_tiposanguineo_usuario" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="administracao.tiposanguineo" table="seguranca.usuario">
-	<columns names="idtiposanguineo" ref-type="src-columns"/>
-	<columns names="id" ref-type="dst-columns"/>
-</constraint>
-
-<constraint name="fk_cidade_endereco" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="administracao.cidade" table="seguranca.endereco">
-	<columns names="idcidade" ref-type="src-columns"/>
-	<columns names="id" ref-type="dst-columns"/>
-</constraint>
-
 <constraint name="fk_telefone_usuario" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="seguranca.usuario" table="seguranca.telefone">
 	<columns names="idusuario" ref-type="src-columns"/>
@@ -918,6 +900,24 @@ END;
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="administracao.uf" table="administracao.cidade">
 	<columns names="uf" ref-type="src-columns"/>
 	<columns names="sigla" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_endereco_usuario" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="seguranca.endereco" table="seguranca.usuario">
+	<columns names="idendereco" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_tiposanguineo_usuario" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="administracao.tiposanguineo" table="seguranca.usuario">
+	<columns names="idtiposanguineo" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_cidade_endereco" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="administracao.cidade" table="seguranca.endereco">
+	<columns names="idcidade" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
 <relationship name="rel_usuario_endereco" type="relfk"
